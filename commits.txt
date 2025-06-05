@@ -1,13 +1,38 @@
-commit 15d23f5f5a56c1204fa88f52eba82c0bdaae04b2
+commit 700bb59000000000000000000000000000000000
 Author: Gabriela Pinto <gpintog1@miumg.edu.gt>
-Date:   Thu Jun 5 13:17:47 2025 -0600
+Date:   Thu Jun 5 13:25:00 2025 -0600
 
-    Agregando contenedor
+    Corrección de errores
 
-commit 2a59d45a829b09103139edad8129d8a5f4bd998a
+commit 5d92ac0000000000000000000000000000000000
 Author: Gabriela Pinto <gpintog1@miumg.edu.gt>
-Date:   Thu Jun 5 13:14:47 2025 -0600
+Date:   Thu Jun 5 13:15:00 2025 -0600
 
-    Agregando seguridad
+    Mantenimiento: Revisión y ajuste de permisos de usuario
+
+commit a23f8150000000000000000000000000000000000
+Author: Gabriela Pinto <gpintog1@miumg.edu.gt>
+Date:   Thu Jun 5 13:00:00 2025 -0600
+
+    Mantenimientos - Commit 13:00
+
+commit 6eea6540000000000000000000000000000000000
+Author: Gabriela Pinto <gpintog1@miumg.edu.gt>
+Date:   Thu Jun 5 12:45:00 2025 -0600
+
+    Contenedor - Commit 12:45
+
+commit 8bc153d0000000000000000000000000000000000
+Author: Gabriela Pinto <gpintog1@miumg.edu.gt>
+Date:   Thu Jun 5 12:30:00 2025 -0600
+
+    Seguridad - Commit 12:30
+
+commit cae93260000000000000000000000000000000000
+Author: Gabriela Pinto <gpintog1@miumg.edu.gt>
+Date:   Thu Jun 5 12:10:00 2025 -0600
+
+    Agregando commits
+
 
 

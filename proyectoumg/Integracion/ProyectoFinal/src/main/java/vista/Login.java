@@ -5,42 +5,17 @@
  */
 package vista;
 
-import Controlador.seguridad.Bitacora;
-import Modelo.seguridad.UsuarioDAO;
-import Controlador.seguridad.Usuario;
-import Controlador.seguridad.UsuarioConectado;
+import datos.UsuarioDAO;
+import domain.Usuario;
 import java.awt.HeadlessException;
 
 import javax.swing.JOptionPane;
-  import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+
 /**
  *
  * @author visitante
  */
 public class Login extends javax.swing.JFrame {
-  
-
-    // Identificacion de la Aplicaciòn
-    final int APLICACION=1;
-    
-    // Método para cifrar la contraseña
-    public String cifrarContrasena(String contrasena) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] bytes = md.digest(contrasena.getBytes());
-            StringBuilder sb = new StringBuilder();
-            for (byte b : bytes) {
-                sb.append(String.format("%02x", b));
-            }
-            return sb.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-
 
     /**
      * Creates new form Login
@@ -48,7 +23,7 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         initComponents();
         setLocationRelativeTo(null);
-        setSize(300, 250);
+        setSize(300, 200);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
@@ -68,8 +43,6 @@ public class Login extends javax.swing.JFrame {
         btnAceptar = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         txtContraseña = new javax.swing.JPasswordField();
-        cboModulos = new javax.swing.JComboBox<>();
-        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -101,21 +74,6 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        txtContraseña.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtContraseñaActionPerformed(evt);
-            }
-        });
-
-        cboModulos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seguridad", "Bancos", "Compras", "Ventas" }));
-        cboModulos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cboModulosActionPerformed(evt);
-            }
-        });
-
-        jLabel4.setText("Mòdulo");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -129,11 +87,9 @@ public class Login extends javax.swing.JFrame {
                         .addGap(28, 28, 28)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel4))
+                            .addComponent(jLabel2))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cboModulos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnAceptar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -155,15 +111,11 @@ public class Login extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3)
                     .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cboModulos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAceptar)
                     .addComponent(jButton2))
-                .addContainerGap())
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         pack();
@@ -174,122 +126,43 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUsuarioActionPerformed
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-       if (txtUsuario.getText().trim().isEmpty() || txtContraseña.getText().trim().isEmpty()) {
-    JOptionPane.showMessageDialog(this, "NO PUEDEN HABER CAMPOS VACIOS", "ERROR", JOptionPane.ERROR_MESSAGE);
-} else {
-    try {
-        Usuario usuarioAConsultar = new Usuario();
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
-        usuarioAConsultar.setUsername(txtUsuario.getText().trim());
+        // TODO add your handling code here:
 
-        // Recuperación de información del usuario
-        usuarioAConsultar = usuarioDAO.query(usuarioAConsultar);
-
-        // Cifrar la contraseña ingresada
-        String contrasenaCifradaIngresada = cifrarContrasena(txtContraseña.getText().trim());
-
-        // Verificar si el usuario y la contraseña cifrada coinciden
-
-                if (contrasenaCifradaIngresada != null &&
-            contrasenaCifradaIngresada.equals(usuarioAConsultar.getPassword()) &&
-            txtUsuario.getText().trim().equals(usuarioAConsultar.getUsername())) {
-
-            JOptionPane.showMessageDialog(null, "Bienvenido al SISTEMA\n", "Mensaje de bienvenida", JOptionPane.INFORMATION_MESSAGE);
-
-            // Registro del usuario en sesión
-            UsuarioConectado usuarioEnSesion = new UsuarioConectado();
-            usuarioEnSesion.setIdUsuario(usuarioAConsultar.getId_usuario());
-            usuarioEnSesion.setUserName(usuarioAConsultar.getUsername());
-
-            // Registro de Bitácora
-            Bitacora bitacoraRegistro = new Bitacora();
-            int resultadoBitacora = bitacoraRegistro.setIngresarBitacora(
-                usuarioEnSesion.getIdUsuario(),
-                APLICACION,
-                "Inicio Sesion"
-            );
-
-            // Obtener módulo seleccionado
-            String areaSeleccionada = cboModulos.getSelectedItem().toString().trim();
-            System.out.println("Área seleccionada: " + areaSeleccionada); // Diagnóstico
-
-            // Redirigir según módulo
-            switch (areaSeleccionada) {
-                case "Seguridad":
-                    try {
-                        MdiGeneral menu = new MdiGeneral();
-                        menu.setVisible(true);
-                        this.dispose();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-
-                case "Ventas":
-                    try {
-                        Mdi_VentasCC menuVentas = new Mdi_VentasCC();
-                        menuVentas.setVisible(true);
-                        this.dispose();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        JOptionPane.showMessageDialog(this, "Error al abrir el módulo Ventas", "ERROR", JOptionPane.ERROR_MESSAGE);
-                    }
-                    break;
-                    
-                case "Compras":
-                    try {
-                        MdiCompras menuVentas = new MdiCompras();
-                        menuVentas.setVisible(true);
-                        this.dispose();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        JOptionPane.showMessageDialog(this, "Error al abrir el módulo Ventas", "ERROR", JOptionPane.ERROR_MESSAGE);
-                    }
-                    break;
-                    
-                case "Bancos":
-                    try {
-                        MdiGenebac menuVentas = new MdiGenebac();
-                        menuVentas.setVisible(true);
-                        this.dispose();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        JOptionPane.showMessageDialog(this, "Error al abrir el módulo Ventas", "ERROR", JOptionPane.ERROR_MESSAGE);
-                    }
-                    break;
-
-                default:
-                    JOptionPane.showMessageDialog(this, "Módulo no reconocido: " + areaSeleccionada, "ERROR", JOptionPane.ERROR_MESSAGE);
-                    break;
-            }
-
+        if (txtUsuario.getText().trim().isEmpty() || txtContraseña.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "NO PUEDEN HABER CAMPOS VACIOS", "ERROR", JOptionPane.ERROR_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(this, "ERROR AL ENCONTRAR USUARIO o CONTRASEÑA", "ERROR", JOptionPane.ERROR_MESSAGE);
-            txtContraseña.setText("");
-            txtUsuario.setText("");
+            try {
+                Usuario usuarioAConsultar = new Usuario();
+                UsuarioDAO usuarioDAO = new UsuarioDAO();
+                usuarioAConsultar.setUsername(txtUsuario.getText().trim());
+                // Recuperación de información a través de otro objeto
+                usuarioAConsultar = usuarioDAO.query(usuarioAConsultar);
+
+                if (txtContraseña.getText().equals(usuarioAConsultar.getPassword()) && txtUsuario.getText().equals(usuarioAConsultar.getUsername())) {
+                    JOptionPane.showMessageDialog(null, "Bienvenido al SISTEMA\n", "Mensaje de bienvenida", JOptionPane.INFORMATION_MESSAGE);
+
+                    MdiGeneral menuGeneral = new MdiGeneral();
+                    menuGeneral.setVisible(true);
+                    this.dispose();
+
+                } else {
+                    JOptionPane.showMessageDialog(this, "ERROR AL ENCONTRAR USUARIO o CONTRASEÑA", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    txtContraseña.setText("");
+                    txtUsuario.setText("");
+                }
+            } catch (HeadlessException e) {
+                JOptionPane.showMessageDialog(this, "ERROR AL ENCONTRAR USUARIO o CONTRASEÑA", "ERROR", JOptionPane.ERROR_MESSAGE);
+                txtContraseña.setText("");
+                txtUsuario.setText("");
+            }
         }
-    } catch (HeadlessException e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(this, "ERROR AL ENCONTRAR USUARIO o CONTRASEÑA", "ERROR", JOptionPane.ERROR_MESSAGE);
-        txtContraseña.setText("");
-        txtUsuario.setText("");   
-   
-  } 
-              } 
+
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void cboModulosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboModulosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cboModulosActionPerformed
-
-    private void txtContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContraseñaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtContraseñaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -328,17 +201,11 @@ public class Login extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
-    private javax.swing.JComboBox<String> cboModulos;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPasswordField txtContraseña;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
-
-    private String cifrarContrasena() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }
